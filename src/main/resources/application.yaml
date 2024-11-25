@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: date formatting app
+  jackson:
+    locale: ru_RU
+#    date-format: yyyy:MM:dd##:HH:mm:ss:SSS
+#    default-property-inclusion: non_null
+#    time-zone: UTC
+server:
+  port: 8080
