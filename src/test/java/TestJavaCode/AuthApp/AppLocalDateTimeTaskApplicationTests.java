@@ -1,4 +1,4 @@
-package TestJavaCode.AppLocalDateTimeTask;
+package TestJavaCode.AuthApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
