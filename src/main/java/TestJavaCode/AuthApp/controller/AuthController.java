@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.logging.Logger;
-
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -33,7 +31,7 @@ public class AuthController {
     private final ITokenRepository tokenRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login( @RequestBody AuthLoginPasswordRequestDTO authRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthLoginPasswordRequestDTO authRequest) {
         if (authRequest == null) {
             return ResponseEntity.badRequest().body("отсутствуют данные  логина либо пороля");
         }
@@ -45,7 +43,7 @@ public class AuthController {
         authResponseDTO.setTokenAccess(jwtUtil.generateAccessToken(userDetails));
         authResponseDTO.setTokenRefresh(jwtUtil.generateRefreshToken(userDetails));
         loggingFilter.logJwtGeneration(userName);
-        loggingFilter.logSuccessfulLogin(userName,"пользователь прошел успешную аутентификацию");
+        loggingFilter.logSuccessfulLogin(userName, "пользователь прошел успешную аутентификацию");
         userDetailsService.upDataToken(authResponseDTO.getTokenRefresh(), userName);
         return ResponseEntity.ok().body(authResponseDTO);
     }

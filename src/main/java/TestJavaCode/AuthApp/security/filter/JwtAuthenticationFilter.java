@@ -10,8 +10,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTUtils jwtUtils;
     private final OurUserDetailedService userDetailedService;
-     private  final  LoggingFilter loggingFilter;
+    private final LoggingFilter loggingFilter;
+
     public JwtAuthenticationFilter(JWTUtils jwtUtils, OurUserDetailedService userDetailedService,
                                    LoggingFilter loggingFilter) {
         this.jwtUtils = jwtUtils;
@@ -53,21 +52,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         String authHeader = request.getHeader("Authorization");
-        String username = null;
-        String token = null;
+        String username ;
+        String token ;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-
 
             try {
                 username = jwtUtils.extractUsername(token);
 
             } catch (ExpiredJwtException ex) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                errorResponse.put("message",  ex.getMessage()+ " Токен просрочен");
+                errorResponse.put("message", ex.getMessage() + " Токен просрочен");
                 response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
-               loggingFilter.logExpiredJwt();
-              loggingFilter.logFailedLogin(ex.getMessage());
+                loggingFilter.logExpiredJwt();
+                loggingFilter.logFailedLogin(ex.getMessage());
                 return;
             } catch (JwtException exception) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -86,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    loggingFilter.logSuccessfulLogin(username,request.getRequestURI());
+                    loggingFilter.logSuccessfulLogin(username, request.getRequestURI());
                 }
             }
 

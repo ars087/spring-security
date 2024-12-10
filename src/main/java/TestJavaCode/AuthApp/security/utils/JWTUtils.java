@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.validation.Valid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -23,16 +24,12 @@ public class JWTUtils {
 
     private final String secretKey = "NewDayfrominItalyyguytytrreewrwwqrafdsgffjloopuytrewqasdfghjkllkmnbvcxzsert";
 
-    private static final long EXPIRATION_TIME_ACCESS_TOKEN = 120000;
+    private static final long EXPIRATION_TIME_ACCESS_TOKEN = 240000;
     private static final long EXPIRATION_TIME_REFRESH_TOKEN =  86400000;
 
     public JWTUtils() {
 
-        String secretString = "YOUR_SECRET_KEY"; // Замените на свой секретный ключ
-        byte[] keyBytes = secretString.getBytes();
-
-    }
-
+       }
 
     public String generateAccessToken(UserDetails userDetails) {
 
@@ -51,7 +48,6 @@ public class JWTUtils {
             .compact();
     }
 
-
     public String generateRefreshToken( UserDetails userDetails) {
         return Jwts.builder()
             .setClaims(new HashMap<>())
@@ -66,7 +62,6 @@ public class JWTUtils {
 
         return extractClaims(token, Claims::getSubject);
     }
-
 
     private <T> T extractClaims(String token, Function<Claims, T> claimsTFunction) throws  JwtExpirationException {
             Claims claims = Jwts.parser()
@@ -90,13 +85,13 @@ public class JWTUtils {
         return extractClaims(token, Claims::getExpiration).before(new Date(System.currentTimeMillis()));
     }
     public  boolean isEqualTo(String token,UserDetails userDetails){
-
        List<String> sentRole =  extractRoles(token);
        List<String> dataBaseRole = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (sentRole.isEmpty()&& !dataBaseRole.isEmpty()) {
-            return false;}
-
+            return false;
+        }
         return true;
+
     }
 }
 

@@ -12,16 +12,15 @@ public class HandlerException {
     public ResponseEntity<?> handleAccountLockedException(AccountBlockException ex) {
         return ResponseEntity
             .status(HttpStatus.LOCKED)
-            .body(new ExceptionResponse (HttpStatus.LOCKED.toString(), ex.getMessage()));
+            .body(new ExceptionResponse(HttpStatus.LOCKED.toString(), ex.getMessage()));
     }
-
 
 
     @ExceptionHandler(CustomExceptionNotFound.class)
     public ResponseEntity<?> userNotFoundException(CustomExceptionNotFound ex) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(new ExceptionResponse (HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
+            .body(new ExceptionResponse(HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
     }
 
 
@@ -29,14 +28,14 @@ public class HandlerException {
     public ResponseEntity<?> userNotFoundException(CustomBadCredentialsExceptions ex) {
         return ResponseEntity
             .status(HttpStatus.UNAUTHORIZED)
-            .body(new ExceptionResponse (HttpStatus.UNAUTHORIZED.toString(), ex.getMessage()));
+            .body(new ExceptionResponse(HttpStatus.UNAUTHORIZED.toString(), ex.getMessage()));
     }
 
     @ExceptionHandler(TokenRefreshException.class)
     public ResponseEntity<?> refreshTokenNotFoundException(TokenRefreshException ex) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(new ExceptionResponse (HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
+            .body(new ExceptionResponse(HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
     }
 
 }

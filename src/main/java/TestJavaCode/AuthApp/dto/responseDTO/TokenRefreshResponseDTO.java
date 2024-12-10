@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenRefreshResponseDTO {
-String tokenAccess;
-String tokenRefresh;
+    String tokenAccess;
+    String tokenRefresh;
 }

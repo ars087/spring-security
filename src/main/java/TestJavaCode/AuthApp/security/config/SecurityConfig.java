@@ -1,7 +1,5 @@
 package TestJavaCode.AuthApp.security.config;
 
-
-import TestJavaCode.AuthApp.security.filter.HttpsRedirectFilter;
 import TestJavaCode.AuthApp.security.filter.JwtAuthenticationFilter;
 import TestJavaCode.AuthApp.security.filter.LoggingFilter;
 import TestJavaCode.AuthApp.security.service.OurUserDetailedService;
@@ -28,46 +26,45 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OurUserDetailedService ourUserDetailedService;
-    private  final LoggingFilter loggingFilter;
-    private final HttpsRedirectFilter httpsRedirectFilter;
+    private final LoggingFilter loggingFilter;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          OurUserDetailedService ourUserDetailedService, LoggingFilter loggingFilter,
-                          HttpsRedirectFilter httpsRedirectFilter
+                          OurUserDetailedService ourUserDetailedService, LoggingFilter loggingFilter
+
 
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.ourUserDetailedService = ourUserDetailedService;
         this.loggingFilter = loggingFilter;
-        this.httpsRedirectFilter = httpsRedirectFilter;
-    }
 
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 
-      return  http.csrf(AbstractHttpConfigurer::disable)
+        return http.csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                 //.requestMatchers("/api/v1/app/home").permitAll()
-        //        .requestMatchers("/api/v1/app/home").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/auth/login").permitAll()
-                .requestMatchers("/api/v1/auth/refreshtoken").permitAll()
+                //   .requestMatchers("/api/v1/auth/login").permitAll()
+                //  .requestMatchers("/api/v1/auth/refreshtoken").permitAll()
 
                 .requestMatchers("/api/v1/app/**").permitAll()
-                  )
+                .requestMatchers("/api/v1/auth/**").permitAll())
+
+//                  ).requiresChannel(channel -> channel
+//              .requestMatchers("/api/v1/auth/refreshtoken").requiresSecure()
+//              .anyRequest().requiresInsecure())
 //                .requestMatchers("/api/v1/app/work").hasAnyAuthority("USER"))
 //                .requestMatchers("/api/v1/app/**")
 //                .authenticated())
 
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               //   .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-          .addFilterBefore(loggingFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(loggingFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-           .addFilterBefore(httpsRedirectFilter, UsernamePasswordAuthenticationFilter.class)
-          .build();
+
+            .build();
 
     }
 

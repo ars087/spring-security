@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExceptionResponse {
-String statusCode;
-String message;
+    String statusCode;
+    String message;
 
 }

@@ -16,6 +16,7 @@ public interface ITokenRepository extends JpaRepository<Token, Long> {
     @Query("UPDATE Token u SET u.token = ?1 WHERE u.user.userName = ?2")
     void updateTokenByUsername(String token, String userName);
 
+
     @Query("SELECT u FROM  Token u WHERE u.user.userName = ?1")
     Optional<Token> findTokenByUserName(String username);
 
