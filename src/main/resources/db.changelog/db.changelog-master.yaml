@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Arsen Azaryan
+
+  - include:
+      file: v-1.0/db.changelog-v.1.yaml
+      relativeToChangelogFile : true
+
+  - changeSet:
+      id: 4
+      author: Arsen Azaryan
+      changes:
+        - tagDatabase:
+            tag: my_tag
+
+encoding: "UTF-8"

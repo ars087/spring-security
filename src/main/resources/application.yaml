@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: OAuth2Auth
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "---------------------your google client Id---------------"
+            client-secret: "------------------your client secret-----------------"
+            scope:
+              - profile
+              - email
+
+            redirect-uri:  "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
+
+
+
+  datasource:
+    url: ${POSTGRES_HOST}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: classpath:/db.changelog/db.changelog-master.yaml
+    default-schema: public
+logging:
+  level:
+    liquibase: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+        oauth2: DEBUG
+server:
+  port: 8080
+
